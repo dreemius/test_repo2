@@ -1,0 +1,57 @@
+<div class="line">
+    <mat-form-field appearance="outline">
+        <mat-label>Выберите сортировку</mat-label>
+        <mat-select #select (selectionChange)="sort(select.value)">
+            <mat-option value="0">Имя: А-Я</mat-option>
+            <mat-option value="1">Имя: Я-А</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline">
+        <mat-label>Найти по фамилии</mat-label>
+        <input matInput placeholder="Фамилия" #input (keyup.enter)="search(input.value)">
+        <mat-icon matSuffix (click)="search(input.value)">search</mat-icon>
+    </mat-form-field>
+</div>
+
+<div class="line">
+    <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Имя" [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Имя</mat-label>
+        <input matInput placeholder="Имя" [(ngModel)]="name">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Роль</mat-label>
+        <mat-select #select [(ngModel)]="role">
+            <mat-option value="Admin">Admin</mat-option>
+            <mat-option value="User">User</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button class="btn" mat-raised-button color="primary" (click)="addItem()">Добавить</button>
+</div>
+
+<div *ngIf="usersList.length > 0; else elseBlock">
+    <mat-selection-list #users class="wrapper" (selectionChange)="selectItem(users.selectedOptions.selected)">
+        <mat-list-option [ngClass]="{'gray': i%2}" *ngFor="let user of usersList; let i=index" [value]="user">
+            <div>
+                <span class="small-column">{{user.username}}</span>
+                <span class="big-column">{{user.name}}</span>
+                <span class="small-column" *ngIf="user.role==='Admin'"> (Admin)</span>
+            </div>
+        </mat-list-option>
+    </mat-selection-list>
+
+    <div class="footer">
+        <div>Пользователей выбрано: {{users.selectedOptions.selected.length}}</div>
+        <div><button class="btn" mat-raised-button color="warn" (click)="deleteItem()">Удалить</button></div>
+    </div>
+</div>
+
+<ng-template #elseBlock>
+    <div>
+        Пользователей не найдено
+    </div>
+</ng-template>
